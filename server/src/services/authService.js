@@ -14,7 +14,7 @@ const OTP_EXPIRY_MINUTES = parseInt(process.env.OTP_EXPIRY_MINUTES) || 10;
 // ── Token helpers ─────────────────────────────────────────
 
 const generateAccessToken = (userId, role) =>
-  jwt.sign({ userId, role }, process.env.JWT_ACCESS_SECRET, {
+  jwt.sign({ userId, role }, process.env.JWT_ACCESS_SECRET || 'staynest_super_secret_access_key_change_in_production', {
     expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
   });
 

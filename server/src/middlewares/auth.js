@@ -15,7 +15,7 @@ const authenticate = async (req, res, next) => {
 
   let decoded;
   try {
-    decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET || 'staynest_super_secret_access_key_change_in_production');
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
       throw new AppError('Token expired', 401);

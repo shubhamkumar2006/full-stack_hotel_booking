@@ -90,51 +90,54 @@ export default function Navbar() {
             <NavigationMenu className="hidden md:flex">
               <NavigationMenuList className="gap-1">
                 <NavigationMenuItem>
-                  <NavLink to="/search">
-                    {({ isActive }) => (
-                      <NavigationMenuLink
-                        className={`${navigationMenuTriggerStyle()} ${
+                  <NavigationMenuLink asChild>
+                    <NavLink
+                      to="/search"
+                      className={({ isActive }) =>
+                        `${navigationMenuTriggerStyle()} ${
                           isActive ? 'bg-accent text-accent-foreground font-semibold' : ''
-                        }`}
-                      >
-                        <Compass className="w-4 h-4 mr-2 text-indigo-400" />
-                        Explore Stays
-                      </NavigationMenuLink>
-                    )}
-                  </NavLink>
+                        }`
+                      }
+                    >
+                      <Compass className="w-4 h-4 mr-2 text-indigo-400" />
+                      Explore Stays
+                    </NavLink>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
 
                 {user?.role === 'HOST' && (
                   <NavigationMenuItem>
-                    <NavLink to="/host">
-                      {({ isActive }) => (
-                        <NavigationMenuLink
-                          className={`${navigationMenuTriggerStyle()} ${
+                    <NavigationMenuLink asChild>
+                      <NavLink
+                        to="/host"
+                        className={({ isActive }) =>
+                          `${navigationMenuTriggerStyle()} ${
                             isActive ? 'bg-accent text-accent-foreground font-semibold' : ''
-                          }`}
-                        >
-                          <Building2 className="w-4 h-4 mr-2 text-purple-400" />
-                          Host Dashboard
-                        </NavigationMenuLink>
-                      )}
-                    </NavLink>
+                          }`
+                        }
+                      >
+                        <Building2 className="w-4 h-4 mr-2 text-purple-400" />
+                        Host Dashboard
+                      </NavLink>
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 )}
 
                 {user?.role === 'ADMIN' && (
                   <NavigationMenuItem>
-                    <NavLink to="/admin">
-                      {({ isActive }) => (
-                        <NavigationMenuLink
-                          className={`${navigationMenuTriggerStyle()} ${
+                    <NavigationMenuLink asChild>
+                      <NavLink
+                        to="/admin"
+                        className={({ isActive }) =>
+                          `${navigationMenuTriggerStyle()} ${
                             isActive ? 'bg-accent text-accent-foreground font-semibold' : ''
-                          }`}
-                        >
-                          <Shield className="w-4 h-4 mr-2 text-rose-400" />
-                          Admin Portal
-                        </NavigationMenuLink>
-                      )}
-                    </NavLink>
+                          }`
+                        }
+                      >
+                        <Shield className="w-4 h-4 mr-2 text-rose-400" />
+                        Admin Portal
+                      </NavLink>
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 )}
               </NavigationMenuList>

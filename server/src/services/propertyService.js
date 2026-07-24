@@ -43,8 +43,15 @@ const searchProperties = async ({
   const where = { status: 'PUBLISHED' };
   if (city) where.city = { contains: city, mode: 'insensitive' };
   if (propertyType) where.propertyType = propertyType;
-  if (amenities && amenities.length > 0) {
-    where.amenities = { array_contains: amenities };
+  if (amenities) {
+    const amenitiesArr = Array.isArray(amenities)
+      ? amenities
+      : typeof amenities === 'string'
+      ? amenities.split(',').filter(Boolean)
+      : [];
+    if (amenitiesArr.length > 0) {
+      where.amenities = { array_contains: amenitiesArr };
+    }
   }
 
   // Filter rooms by availability + price + occupancy
