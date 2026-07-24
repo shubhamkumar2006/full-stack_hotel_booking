@@ -7,17 +7,16 @@ const initSentry = (app) => {
     return;
   }
 
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || 'development',
-    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-    integrations: [
-      new Sentry.Integrations.Http({ tracing: true }),
-      new Sentry.Integrations.Express({ app }),
-    ],
-  });
-
-  logger.info('Sentry initialized');
+  try {
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+      environment: process.env.NODE_ENV || 'development',
+      tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+    });
+    logger.info('Sentry initialized');
+  } catch (err) {
+    logger.warn({ error: err.message }, 'Failed to initialize Sentry');
+  }
 };
 
 module.exports = { Sentry, initSentry };

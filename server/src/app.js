@@ -25,10 +25,15 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 const app = express();
 
 // ── Sentry ────────────────────────────────────────────────
-initSentry(app);
-if (Sentry?.Handlers) {
-  app.use(Sentry.Handlers.requestHandler());
-  app.use(Sentry.Handlers.tracingHandler());
+if (process.env.SENTRY_DSN) {
+  try {
+    initSentry(app);
+    if (Sentry?.Handlers?.requestHandler) {
+      app.use(Sentry.Handlers.requestHandler());
+    }
+  } catch (err) {
+    logger.warn('Sentry request handler skipped');
+  }
 }
 
 // ── Security ──────────────────────────────────────────────
@@ -123,7 +128,7 @@ app.use('/api',            socialRoutes);
 app.use('/api',            dashboardRoutes);
 
 // ── Sentry Error Handler ──────────────────────────────────
-if (Sentry?.Handlers) {
+if (process.env.SENTRY_DSN && Sentry?.Handlers?.errorHandler) {
   app.use(Sentry.Handlers.errorHandler());
 }
 
