@@ -1,16 +1,15 @@
 {
   "name": "staynest-platform",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
-    "postinstall": "cd server && npm install && npx prisma generate",
-    "build": "cd server && npm install && npx prisma generate && cd ../client && npm install && npm run build"
+    "postinstall": "cd server && npm install --legacy-peer-deps && npx prisma generate",
+    "build": "cd server && npm install --legacy-peer-deps && npx prisma generate && cd ../client && npm install --legacy-peer-deps && npm run build"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
-    "@sentry/node": "^8.0.0",
     "bcryptjs": "^2.4.3",
-    "cloudinary": "^2.2.0",
+    "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -27,7 +26,6 @@
     "nodemailer": "^6.9.13",
     "pino": "^9.1.0",
     "pino-http": "^10.2.0",
-    "pino-pretty": "^11.2.1",
     "prisma": "^5.14.0",
     "prom-client": "^15.1.2",
     "razorpay": "^2.9.2",
