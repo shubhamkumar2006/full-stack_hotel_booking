@@ -12,6 +12,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "postinstall": "prisma generate",
+    "build": "prisma generate && prisma db push",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
