@@ -1,10 +1,10 @@
 {
   "name": "staynest-platform",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
-    "postinstall": "prisma generate --schema=server/prisma/schema.prisma",
-    "build": "prisma generate --schema=server/prisma/schema.prisma && cd client && npm install && npm run build"
+    "postinstall": "cd server && npm install && npx prisma generate",
+    "build": "cd server && npm install && npx prisma generate && cd ../client && npm install && npm run build"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
@@ -27,6 +27,7 @@
     "nodemailer": "^6.9.13",
     "pino": "^9.1.0",
     "pino-http": "^10.2.0",
+    "pino-pretty": "^11.2.1",
     "prisma": "^5.14.0",
     "prom-client": "^15.1.2",
     "razorpay": "^2.9.2",
