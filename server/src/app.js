@@ -6,7 +6,6 @@ const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const pinoHttp = require('pino-http');
-const promClient = require('prom-client');
 
 const logger = require('./config/logger');
 const { initSentry, Sentry } = require('./config/sentry');
@@ -114,8 +113,13 @@ app.get('/live', (req, res) => res.json({ status: 'live' }));
 
 // ── Prometheus Endpoint ───────────────────────────────────
 app.get('/metrics', async (req, res) => {
-  res.set('Content-Type', promClient.register.contentType);
-  res.end(await promClient.register.metrics());
+  try {
+    const promClient = require('prom-client');
+    res.set('Content-Type', promClient.register.contentType);
+    res.end(await promClient.register.metrics());
+  } catch (err) {
+    res.status(200).send('# Metrics unavailable');
+  }
 });
 
 // ── API Routes ────────────────────────────────────────────
