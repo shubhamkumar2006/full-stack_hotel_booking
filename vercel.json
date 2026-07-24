@@ -13,33 +13,30 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/health",
-      "dest": "/api/index.js"
+      "source": "/health",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/ready",
-      "dest": "/api/index.js"
+      "source": "/ready",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/live",
-      "dest": "/api/index.js"
+      "source": "/live",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/metrics",
-      "dest": "/api/index.js"
+      "source": "/metrics",
+      "destination": "/api/index.js"
     },
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/$1"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
