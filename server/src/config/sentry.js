@@ -1,9 +1,15 @@
-const Sentry = require('@sentry/node');
+let Sentry = null;
+try {
+  Sentry = require('@sentry/node');
+} catch (e) {
+  // Sentry is an optional dependency
+}
+
 const logger = require('./logger');
 
 const initSentry = (app) => {
-  if (!process.env.SENTRY_DSN) {
-    logger.warn('SENTRY_DSN not set — Sentry disabled');
+  if (!process.env.SENTRY_DSN || !Sentry) {
+    logger.warn('SENTRY_DSN not set or Sentry unavailable — Sentry disabled');
     return;
   }
 
