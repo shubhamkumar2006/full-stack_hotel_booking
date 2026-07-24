@@ -1,0 +1,11 @@
+FROM nginx:1.25-alpine
+
+# Copy nginx config file
+COPY nginx/staynest_nginx.conf /etc/nginx/nginx.conf
+
+# Copy ssl certificates
+COPY nginx/ssl/ /etc/nginx/ssl/
+
+EXPOSE 80 443
+
+CMD ["nginx", "-g", "daemon off;"]

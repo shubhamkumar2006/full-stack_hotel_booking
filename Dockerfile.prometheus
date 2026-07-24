@@ -1,0 +1,4 @@
+FROM prom/prometheus:latest
+
+# Copy prometheus config
+COPY monitoring/staynest_prometheus.yml /etc/prometheus/prometheus.yml
