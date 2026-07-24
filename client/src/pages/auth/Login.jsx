@@ -36,7 +36,7 @@ export default function Login() {
       else if (role === 'HOST') navigate('/host');
       else navigate('/');
     },
-    onError: (err) => toast.error(err.response?.data?.error?.message || 'Login failed'),
+    onError: (err) => toast.error(err.response?.data?.message || err.response?.data?.error?.message || 'Invalid email or password'),
   });
 
   // Phone OTP request mutation
