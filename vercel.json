@@ -1,13 +1,13 @@
 {
-  "buildCommand": "cd server && npm install && npm run build && cd ../client && npm install && npm run build",
+  "buildCommand": "npm run build --prefix server && npm run build --prefix client",
   "outputDirectory": "client/dist",
   "rewrites": [
     {
-      "source": "/api",
+      "source": "/api/(.*)",
       "destination": "/api/index.js"
     },
     {
-      "source": "/api/(.*)",
+      "source": "/api",
       "destination": "/api/index.js"
     },
     {
@@ -27,7 +27,7 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/((?!api|health|ready|live|metrics|assets|favicon.svg).*)",
+      "source": "/:path((?!api|health|ready|live|metrics).*)",
       "destination": "/index.html"
     }
   ]
