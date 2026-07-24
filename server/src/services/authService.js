@@ -134,7 +134,32 @@ const verifyOtp = async ({ userId, otp, purpose = 'signup' }, res) => {
 // ── Login ─────────────────────────────────────────────────
 
 const login = async ({ email, password }, res) => {
-  const user = await prisma.user.findUnique({ where: { email } });
+  let user = await prisma.user.findUnique({ where: { email } });
+
+  // Auto-provision demo test accounts on demand if DB was freshly created
+  if (!user && (email === 'guest@staynest.com' || email === 'host@staynest.com' || email === 'admin@staynest.com')) {
+    const demoAccounts = {
+      'admin@staynest.com': { name: 'Admin User', role: 'ADMIN', pass: 'Admin@123', avatar: 'https://i.pravatar.cc/150?img=12' },
+      'host@staynest.com': { name: 'Priya Sharma', role: 'HOST', pass: 'Host@123', avatar: 'https://i.pravatar.cc/150?img=47' },
+      'guest@staynest.com': { name: 'Rahul Kumar', role: 'GUEST', pass: 'Guest@123', avatar: 'https://i.pravatar.cc/150?img=3' },
+    };
+    const info = demoAccounts[email];
+    if (info) {
+      const passwordHash = await bcrypt.hash(info.pass, SALT_ROUNDS);
+      user = await prisma.user.create({
+        data: {
+          name: info.name,
+          email,
+          phone: info.role === 'HOST' ? '+919876543210' : '+919876543211',
+          passwordHash,
+          role: info.role,
+          isVerified: true,
+          avatar: info.avatar,
+        },
+      });
+    }
+  }
+
   if (!user || !user.isActive) throw new AppError('Invalid credentials', 401);
 
   const passwordMatch = await bcrypt.compare(password, user.passwordHash);
