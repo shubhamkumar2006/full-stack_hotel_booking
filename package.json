@@ -1,6 +1,6 @@
 {
   "name": "staynest-platform",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "postinstall": "cd server && npm install && npx prisma generate",
