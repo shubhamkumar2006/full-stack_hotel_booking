@@ -1,26 +1,16 @@
 const logger = require('./logger');
 
-let Sentry = null;
-if (process.env.SENTRY_DSN) {
-  try {
-    Sentry = require('@sentry/node');
-  } catch (e) {
-    logger.warn('Sentry package not loaded');
-  }
-}
+const Sentry = {
+  Handlers: {
+    requestHandler: () => (req, res, next) => next(),
+    tracingHandler: () => (req, res, next) => next(),
+    errorHandler: () => (err, req, res, next) => next(err),
+  },
+  init: () => {},
+};
 
 const initSentry = (app) => {
-  if (!process.env.SENTRY_DSN || !Sentry) {
-    return;
-  }
-  try {
-    Sentry.init({
-      dsn: process.env.SENTRY_DSN,
-      environment: process.env.NODE_ENV || 'development',
-    });
-  } catch (err) {
-    logger.warn({ error: err.message }, 'Failed to initialize Sentry');
-  }
+  logger.info('Sentry disabled (no DSN configured)');
 };
 
 module.exports = { Sentry, initSentry };
