@@ -77,26 +77,31 @@ app.use(cookieParser());
 app.use('/api', apiLimiter);
 
 // ── Prometheus Metrics ────────────────────────────────────
-const collectDefaultMetrics = promClient.collectDefaultMetrics;
-collectDefaultMetrics({ prefix: 'staynest_' });
+try {
+  const promClient = require('prom-client');
+  const collectDefaultMetrics = promClient.collectDefaultMetrics;
+  collectDefaultMetrics({ prefix: 'staynest_' });
 
-const httpRequestDuration = new promClient.Histogram({
-  name: 'http_request_duration_ms',
-  help: 'Duration of HTTP requests in ms',
-  labelNames: ['method', 'route', 'status'],
-  buckets: [5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
-});
-
-app.use((req, res, next) => {
-  const start = Date.now();
-  res.on('finish', () => {
-    httpRequestDuration.observe(
-      { method: req.method, route: req.route?.path || req.path, status: res.statusCode },
-      Date.now() - start
-    );
+  const httpRequestDuration = new promClient.Histogram({
+    name: 'http_request_duration_ms',
+    help: 'Duration of HTTP requests in ms',
+    labelNames: ['method', 'route', 'status'],
+    buckets: [5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
   });
-  next();
-});
+
+  app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+      httpRequestDuration.observe(
+        { method: req.method, route: req.route?.path || req.path, status: res.statusCode },
+        Date.now() - start
+      );
+    });
+    next();
+  });
+} catch (err) {
+  // Ignore prometheus initialization error in serverless environment
+}
 
 // ── Health Checks ─────────────────────────────────────────
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
