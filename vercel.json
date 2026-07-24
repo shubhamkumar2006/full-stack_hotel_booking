@@ -1,49 +1,34 @@
 {
-  "version": 2,
-  "builds": [
+  "buildCommand": "cd server && npm install --legacy-peer-deps && npx prisma generate && cd ../client && npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": "client/dist",
+  "rewrites": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node"
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
     },
     {
-      "src": "client/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "source": "/api",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/api",
-      "dest": "/api/index.js"
+      "source": "/health",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/health",
-      "dest": "/api/index.js"
+      "source": "/ready",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/ready",
-      "dest": "/api/index.js"
+      "source": "/live",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/live",
-      "dest": "/api/index.js"
+      "source": "/metrics",
+      "destination": "/api/index.js"
     },
     {
-      "src": "/metrics",
-      "dest": "/api/index.js"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/$1"
+      "source": "/:path((?!api|health|ready|live|metrics).*)",
+      "destination": "/index.html"
     }
   ]
 }
